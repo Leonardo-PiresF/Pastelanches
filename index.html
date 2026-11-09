@@ -1,66 +1,19 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Pastelanches Vitória · Pedidos</title>
-  <meta name="description" content="Cardápio digital com pedidos na mesa, delivery e retirada da Pastelanches Vitória, Paulo Afonso (BA).">
-  <meta name="theme-color" content="#D62718">
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-<div class="app">
-  <div class="client-col">
-    <div class="side-label">O que o cliente vê no celular</div>
-    <div class="mode" role="group" aria-label="Simular entrada do cliente">
-      <button type="button" data-mode="mesa">Mesa 12 (QR)</button>
-      <button type="button" data-mode="delivery">Delivery</button>
-      <button type="button" data-mode="retirada">Retirada</button>
-    </div>
-    <div class="phone">
-      <div class="screen" id="screen"></div>
-    </div>
-  </div>
-
-  <section class="panel" aria-label="Painel da loja">
-    <div class="p-top">
-      <div>
-        <div class="side-label">O que a loja vê no computador ou tablet</div>
-        <h2>Painel de pedidos</h2>
-        <p>Mesa, delivery e retirada numa fila só. Pedidos marcados "exemplo" são de demonstração.</p>
-      </div>
-      <label class="switch"><input type="checkbox" id="kitchen" checked> Cozinha aceitando pedidos</label>
-    </div>
-    <div class="stats" id="stats"></div>
-    <div class="board" id="board"></div>
-    <div class="manage">
-      <div class="box">
-        <h3>Item em falta</h3>
-        <p>Desmarcou, sumiu do cardápio na hora. Sem refazer arte.</p>
-        <input type="search" id="stockSearch" placeholder="Buscar item ou número" aria-label="Buscar item">
-        <div class="stock" id="stock"></div>
-      </div>
-      <div class="box">
-        <h3>Promoção do dia</h3>
-        <p>Aparece no topo do cardápio. Liga e desliga sem postar nada.</p>
-        <div id="promoAdmin"></div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<nav class="tabs" aria-label="Alternar visão">
-  <button type="button" data-view="client">Cliente</button>
-  <button type="button" data-view="panel">Painel <span class="count" id="tabCount" hidden></span></button>
-</nav>
-<div class="toast" id="toast" role="status" hidden></div>
-
-<script src="js/menu.js"></script>
-<script src="js/app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#FFFFFF" />
+    <title>Pastelanches Vitória | Peça pelo cardápio</title>
+    <meta name="description" content="Pastéis, salgados, lanches e pizzas da Pastelanches Vitória, em Paulo Afonso. Peça na mesa, para retirar ou por delivery, e encomende salgados para festa." />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

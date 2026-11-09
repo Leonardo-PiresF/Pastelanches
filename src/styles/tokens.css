@@ -1,0 +1,34 @@
+:root {
+  --papel: #FFFFFF;
+  --massa: #F3F3F5;
+  --fritura: #1D1D21;
+  --texto-2: #5E5E67;
+  --filete: #E2E2E6;
+  --selo: #DF1B2A;
+  --selo-escuro: #B5121F;
+  --selo-claro: #FDEDEE;
+  --gema: #FFC21A;
+  --ok: #17803F;
+  --apagado: #9A9AA3;
+  --superficie: #FFFFFF;
+  --sombra-flutuante: 0 10px 28px rgb(24 24 27 / .18);
+  --sombra-leve: 0 1px 3px rgb(24 24 27 / .12);
+
+  --titulo: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --texto: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --t-13: 0.8125rem;
+  --t-16: 1rem;
+  --t-20: 1.25rem;
+  --t-25: 1.5625rem;
+  --t-31: 1.9375rem;
+  --t-39: 2.4375rem;
+
+  --r-promo: 16px;
+  --r-foto: 12px;
+  --r-botao: 10px;
+
+  --margem: 16px;
+  --largura: 1240px;
+  --curva: cubic-bezier(.2, .8, .2, 1);
+}

@@ -1,0 +1,58 @@
+/* Banner de promoção. --tom é a cor de fundo da foto e pinta a área do texto.
+   Celular: foto em cima (recorte 16:9 do assunto), texto embaixo.
+   Tablet em diante: foto larga de fundo, texto no lado vazio. */
+.banner {
+  --tom: #93121A;
+  --tinta: #fff;
+  --tinta-2: rgb(255 255 255 / .88);
+  --realce: var(--gema);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  overflow: clip;
+  container-type: inline-size;
+  background: var(--tom);
+  color: var(--tinta);
+  text-align: left;
+  text-decoration: none;
+  isolation: isolate;
+}
+.banner-claro { --tinta: var(--fritura); --tinta-2: rgb(29 29 33 / .82); --realce: var(--selo-escuro); }
+.banner-sem-foto { --tom: var(--gema); }
+
+.banner-midia { position: relative; display: block; aspect-ratio: 16 / 9; }
+.banner-midia img { width: 100%; height: 100%; object-fit: cover; }
+/* A base da foto se desfaz no tom, para a emenda com o texto não aparecer */
+.banner-midia::after { content: ''; position: absolute; inset: auto 0 0; height: 34%; background: linear-gradient(to top, var(--tom), transparent); }
+
+.banner-corpo { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 2px 16px 16px; }
+.banner-sem-foto .banner-corpo { padding-top: 18px; }
+.banner-rotulo { color: var(--realce); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.banner-titulo { font: 800 22px/1.15 var(--titulo); letter-spacing: -.01em; }
+.banner-texto { font-size: var(--t-13); line-height: 1.4; color: var(--tinta-2); }
+.banner-rodape { align-self: stretch; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 10px; }
+.banner-preco { display: flex; flex-direction: column; line-height: 1.1; }
+.banner-preco small { font-size: 12px; font-weight: 600; color: var(--tinta-2); }
+.banner-preco b { font: 800 28px/1 var(--titulo); color: var(--realce); font-variant-numeric: tabular-nums; }
+.banner-acao { display: inline-flex; align-items: center; gap: 4px; min-height: 38px; padding: 0 10px 0 14px; border-radius: 19px; background: #fff; color: var(--selo-escuro); font-size: 14px; font-weight: 700; white-space: nowrap; transition: transform 150ms ease; }
+.banner-claro .banner-acao { background: var(--selo); color: #fff; }
+.banner:hover .banner-acao { transform: translateX(3px); }
+
+@media (min-width: 720px) {
+  .banner { aspect-ratio: 3 / 1; flex-direction: row; align-items: center; }
+  .banner-midia { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; }
+  .banner-midia::after { inset: 0; height: auto; background: linear-gradient(90deg, var(--tom) 22%, transparent 46%); }
+  .banner-recorte .banner-midia { left: 50%; }
+  .banner-recorte .banner-midia::after { background: linear-gradient(90deg, var(--tom), transparent 24%); }
+  .banner-corpo { flex: none; width: 42%; gap: 2px; padding: 16px 0 16px 4cqi; }
+  .banner-sem-foto .banner-corpo { width: auto; padding-top: 16px; }
+  .banner-titulo { font-size: clamp(22px, 3.6cqi, 34px); line-height: 1.1; }
+  .banner-texto { max-width: 34cqi; font-size: 15px; }
+  .banner-rodape { align-self: flex-start; flex-direction: column; align-items: flex-start; margin-top: 0; padding-top: 8px; }
+  .banner-preco b { font-size: clamp(30px, 5.2cqi, 44px); }
+  .banner-acao { min-height: 36px; }
+}
