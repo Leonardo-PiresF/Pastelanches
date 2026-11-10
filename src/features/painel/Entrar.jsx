@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { arquivo } from '../../lib/config.js'
 import { entrar, modoDemo } from '../../lib/db.js'
 
 export default function Entrar({ aoEntrar }) {
@@ -22,7 +23,7 @@ export default function Entrar({ aoEntrar }) {
   return (
     <main className="entrar">
       <form className="formulario" onSubmit={enviar}>
-        <img src="/logo.webp" alt="Pastelanches Vitória" width="72" height="72" />
+        <img src={arquivo('/logo.webp')} alt="Pastelanches Vitória" width="72" height="72" />
         <h1>Painel da loja</h1>
         {modoDemo
           ? <p className="dica">Modo demonstração: os pedidos ficam só neste navegador.</p>

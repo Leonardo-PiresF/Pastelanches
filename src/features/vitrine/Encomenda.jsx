@@ -6,7 +6,7 @@ import { useCatalogo } from '../../hooks/useCatalogo.js'
 import { useCarrinho } from '../../hooks/useCarrinho.js'
 import { useFeriados } from '../../hooks/useFeriados.js'
 import { irPara } from '../../hooks/useRota.js'
-import { CATEGORIAS } from '../../lib/config.js'
+import { CATEGORIAS, arquivo } from '../../lib/config.js'
 import { brl, mascaraTelefone, somenteDigitos } from '../../lib/formato.js'
 import { montarDias } from '../../lib/agenda.js'
 import { criarPedido, horariosOcupados } from '../../lib/db.js'
@@ -27,7 +27,7 @@ function useOcupados() {
   return ocupados
 }
 
-export default function Encomenda() {
+export default function Encomenda({ categoria }) {
   const { dados, erro, carregando, recarregar } = useCatalogo()
   const carrinho = useCarrinho('encomenda')
   const feriados = useFeriados()
@@ -41,6 +41,11 @@ export default function Encomenda() {
   const dias = useMemo(() => (dados
     ? montarDias({ agenda: dados.loja.agenda, especiais: dados.especiais, feriados, ocupados, quantos: DIAS_A_FRENTE })
     : []), [dados, feriados, ocupados])
+
+  // Vindo da busca ou do atalho do cardápio (#/encomenda/quiches), já abre na categoria.
+  useEffect(() => {
+    if (dados && categoria) document.getElementById(`cat-${categoria}`)?.scrollIntoView()
+  }, [dados, categoria])
 
   if (carregando) return <Carregando texto="Abrindo as encomendas…" />
   if (!dados) return <Erro texto={erro} aoTentar={recarregar} />
@@ -84,7 +89,7 @@ export default function Encomenda() {
     <div className="encomenda">
       <Topo atual="encomenda" />
       <header className="encomenda-heroi">
-        <img src="/fotos/banner-salgados.webp" alt="" fetchPriority="high" />
+        <img src={arquivo('/fotos/banner-salgados.webp')} alt="" fetchPriority="high" />
         <div>
           <span className="rotulo">Encomenda · retirada na loja</span>
           <h1>Salgados para festa</h1>

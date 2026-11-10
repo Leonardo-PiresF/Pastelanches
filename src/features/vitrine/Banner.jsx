@@ -1,5 +1,5 @@
 import Icone from '../../components/Icone.jsx'
-import { BANNERS, recorteDe } from '../../lib/config.js'
+import { BANNERS, arquivo, recorteDe } from '../../lib/config.js'
 import { brl } from '../../lib/formato.js'
 import '../../styles/banner.css'
 
@@ -16,8 +16,8 @@ export default function Banner({ foto, rotulo, titulo, texto, antesDoPreco = 'po
     <Raiz className={classes.filter(Boolean).join(' ')} style={feito && { '--tom': feito.tom }} {...alvo}>
       {foto && (
         <picture className="banner-midia">
-          {feito && <source media="(max-width: 719px)" srcSet={recorteDe(foto)} />}
-          <img src={foto} alt="" loading={prioridade ? 'eager' : 'lazy'} />
+          {feito && <source media="(max-width: 719px)" srcSet={arquivo(recorteDe(foto))} />}
+          <img src={arquivo(foto)} alt="" loading={prioridade ? 'eager' : 'lazy'} />
         </picture>
       )}
       <span className="banner-corpo">

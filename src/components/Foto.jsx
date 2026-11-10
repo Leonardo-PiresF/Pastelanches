@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { recorteDe } from '../lib/config.js'
+import { arquivo, recorteDe } from '../lib/config.js'
 
 // Se a foto não carregar, fica a placa de massa com a inicial, nunca o ícone quebrado.
 export default function Foto({ src, alt, className = '', prioridade = false }) {
@@ -16,7 +16,7 @@ export default function Foto({ src, alt, className = '', prioridade = false }) {
   return (
     <img
       className={`foto ${className}`}
-      src={recorteDe(src)}
+      src={arquivo(recorteDe(src))}
       alt={alt}
       loading={prioridade ? 'eager' : 'lazy'}
       fetchPriority={prioridade ? 'high' : undefined}

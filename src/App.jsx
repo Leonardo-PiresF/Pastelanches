@@ -12,7 +12,7 @@ export default function App() {
   const [rota, parametro] = useRota()
 
   let tela = <Vitrine />
-  if (rota === 'encomenda') tela = <Encomenda />
+  if (rota === 'encomenda') tela = <Encomenda categoria={parametro} />
   if (rota === 'pedido' && parametro) tela = <Senha codigo={parametro} />
   if (rota === 'painel') tela = <Painel aba={parametro} />
   if (rota === 'imprimir' && parametro) tela = <Cupom codigo={parametro} />

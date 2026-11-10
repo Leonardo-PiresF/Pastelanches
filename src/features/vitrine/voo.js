@@ -1,5 +1,5 @@
 // Efeito de assinatura: a miniatura do item voa até o contador do carrinho (FLIP).
-import { recorteDe } from '../../lib/config.js'
+import { arquivo, recorteDe } from '../../lib/config.js'
 
 const semMovimento = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -20,7 +20,7 @@ export function voar(origem, foto) {
     const y1 = fim.top + fim.height / 2 - tamanho / 2
 
     const voador = document.createElement(foto ? 'img' : 'span')
-    if (foto) voador.src = recorteDe(foto)
+    if (foto) voador.src = arquivo(recorteDe(foto))
     voador.className = 'voador'
     voador.setAttribute('aria-hidden', 'true')
     document.body.appendChild(voador)

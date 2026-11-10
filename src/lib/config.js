@@ -34,6 +34,11 @@ export const BANNERS = {
   '/fotos/banner-congelados.webp': { nome: 'Banner congelados', tom: '#1C1B1B' }
 }
 
+// Arquivos da pasta public são gravados como "/fotos/x.webp". Na tela, viram relativos ao endereço
+// do site, para funcionar também quando ele está numa subpasta (GitHub Pages).
+export const arquivo = (caminho) =>
+  caminho?.startsWith('/') ? `${import.meta.env.BASE_URL}${caminho.slice(1)}` : caminho
+
 // Em miniatura e na capa do item, a foto de banner entra pelo recorte de celular, que centraliza o assunto.
 export const recorteDe = (foto) => (BANNERS[foto] ? foto.replace('.webp', '-m.webp') : foto)
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Folha from './Folha.jsx'
 import Icone from './Icone.jsx'
 import { TIPO, brl, quando } from '../lib/formato.js'
+import { arquivo } from '../lib/config.js'
 import { listarMeusPedidos } from '../lib/meusPedidos.js'
 
 function MeusPedidos({ aberta, aoFechar }) {
@@ -38,7 +39,7 @@ export default function Topo({ atual }) {
     <header className="topo">
       <div className="topo-dentro">
         <a href="#/" className="topo-marca" aria-label="Pastelanches Vitória, início">
-          <img src="/logo.webp" alt="" width="40" height="40" />
+          <img src={arquivo('/logo.webp')} alt="" width="40" height="40" />
         </a>
         <nav aria-label="Principal">
           <a href="#/" aria-current={marcar('cardapio')}>Cardápio</a>

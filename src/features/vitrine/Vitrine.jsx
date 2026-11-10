@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import Destaques from './Destaques.jsx'
-import { Abas, Linhas, Listas, MaisPedidos, buscar } from './Cardapio.jsx'
+import { Abas, AtalhosFesta, Linhas, Listas, MaisPedidos, ParaFesta, buscar } from './Cardapio.jsx'
 import ItemFolha from './ItemFolha.jsx'
 import Checkout from './Checkout.jsx'
 import Sacola from './Sacola.jsx'
@@ -12,7 +12,7 @@ import { Carregando, Erro } from '../../components/Estado.jsx'
 import Icone from '../../components/Icone.jsx'
 import Topo from '../../components/Topo.jsx'
 import { BANNER_PADRAO } from '../../data/cardapio.js'
-import { CATEGORIAS, LOJA } from '../../lib/config.js'
+import { CATEGORIAS, LOJA, arquivo } from '../../lib/config.js'
 import { brl } from '../../lib/formato.js'
 import { pedidoEmAndamento } from '../../lib/meusPedidos.js'
 import { promocoesDeHoje, promocoesFuturas } from '../../lib/pedido.js'
@@ -43,7 +43,10 @@ export default function Vitrine() {
   const vitrine = useMemo(() => {
     if (!dados) return null
     const produtos = dados.produtos.filter((p) => p.catalogo === 'cardapio' && p.disponivel)
+    const festa = dados.produtos.filter((p) => p.catalogo === 'festa' && p.disponivel)
     return {
+      festa,
+      categoriasFesta: CATEGORIAS.festa.filter((c) => festa.some((p) => p.categoria === c.id)),
       produtos,
       destaques: produtos.filter((p) => p.destaque && p.foto),
       promocoes: promocoesDeHoje(dados.promocoes),
@@ -75,6 +78,11 @@ export default function Vitrine() {
 
   const cozinhaAberta = dados.loja.cozinha_aberta
   const resultados = buscar(vitrine.produtos, termo)
+  const resultadosFesta = buscar(vitrine.festa, termo)
+  // Promoção entra na busca com a cara de um item do cardápio; o toque abre a promoção.
+  const resultadosPromo = buscar(vitrine.promocoes, termo)
+    .map((p) => ({ id: p.id, nome: p.titulo, descricao: p.texto, preco: p.preco, foto: p.foto, promocao: p }))
+  const total = resultados.length + resultadosFesta.length + resultadosPromo.length
   const buscando = termo.trim().length > 0
   const banner = dados.loja.banner ?? BANNER_PADRAO
 
@@ -84,10 +92,10 @@ export default function Vitrine() {
 
       <header className="loja">
         <div className="loja-capa">
-          <img src="/fotos/capa-pastel.webp" alt="" fetchPriority="high" />
+          <img src={arquivo('/fotos/capa-pastel.webp')} alt="" fetchPriority="high" />
         </div>
         <div className="loja-cartao">
-          <img className="loja-logo" src="/logo.webp" alt="" width="96" height="96" />
+          <img className="loja-logo" src={arquivo('/logo.webp')} alt="" width="96" height="96" />
           <div className="loja-nome">
             <h1>{LOJA.nome}</h1>
             <p className="loja-meta">
@@ -140,10 +148,22 @@ export default function Vitrine() {
         <main className="vitrine-conteudo">
           {buscando ? (
             <section className="categoria" aria-live="polite">
-              <h2 className="titulo-secao">{resultados.length ? `${resultados.length} resultado${resultados.length > 1 ? 's' : ''}` : 'Nada encontrado'}</h2>
-              {resultados.length
-                ? <Linhas produtos={resultados} aoEscolher={escolherProduto} />
-                : <p className="dica">Tente outro nome, um ingrediente ou o número do pastel especial.</p>}
+              <h2 className="titulo-secao">{total ? `${total} resultado${total > 1 ? 's' : ''}` : 'Nada encontrado'}</h2>
+              {resultadosPromo.length > 0 && (
+                <>
+                  <h3 className="subtitulo-busca">Promoção de hoje</h3>
+                  <Linhas produtos={resultadosPromo} aoEscolher={(p, origem) => escolherPromocao(p.promocao, origem)} />
+                </>
+              )}
+              {resultadosPromo.length > 0 && resultados.length > 0 && <h3 className="subtitulo-busca">Cardápio</h3>}
+              {resultados.length > 0 && <Linhas produtos={resultados} aoEscolher={escolherProduto} />}
+              {resultadosFesta.length > 0 && (
+                <>
+                  <h3 className="subtitulo-busca">Para encomendar</h3>
+                  <ParaFesta produtos={resultadosFesta} />
+                </>
+              )}
+              {!total && <p className="dica">Tente outro nome, um ingrediente ou o número do pastel especial.</p>}
             </section>
           ) : (
             <>
@@ -151,6 +171,7 @@ export default function Vitrine() {
               <MaisPedidos produtos={vitrine.destaques} aoEscolher={escolherProduto} />
 
               <Listas produtos={vitrine.produtos} aoEscolher={escolherProduto} />
+              <AtalhosFesta categorias={vitrine.categoriasFesta} />
             </>
           )}
         </main>
@@ -159,7 +180,7 @@ export default function Vitrine() {
       </div>
 
       <footer className="vitrine-rodape">
-        <img src="/logo.webp" alt="" width="48" height="48" loading="lazy" />
+        <img src={arquivo('/logo.webp')} alt="" width="48" height="48" loading="lazy" />
         <p>
           <b>{LOJA.nome}</b><br />
           {LOJA.endereco}<br />

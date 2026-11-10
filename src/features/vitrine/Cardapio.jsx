@@ -10,13 +10,24 @@ const preco = (p) => (p.tamanhos ? `a partir de ${brl(precoInicial(p))}` : brl(p
 
 const normalizar = (s) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
 
-export function buscar(produtos, termo) {
+const NOME_CATEGORIA = Object.fromEntries([...CATEGORIAS.cardapio, ...CATEGORIAS.festa].map((c) => [c.id, c.nome]))
+
+// Tudo que o cliente pode digitar para achar o item: nome, ingredientes, categoria,
+// sabores (maracujá acha o suco, calabresa acha a pizza) e tamanhos (lata acha o refri).
+const textoDe = (p) => normalizar([
+  p.nome ?? p.titulo,
+  p.descricao ?? p.texto,
+  NOME_CATEGORIA[p.categoria],
+  ...(p.sabores?.opcoes ?? []),
+  ...Object.values(p.sabores?.descricoes ?? {}),
+  ...(p.tamanhos ?? []).map((t) => t.nome)
+].filter(Boolean).join(' '))
+
+export function buscar(itens, termo) {
   const t = normalizar(termo.trim())
   if (!t) return []
   const numeroBuscado = /^\d{1,2}$/.test(t) ? Number(t) : null
-  return produtos.filter((p) =>
-    (numeroBuscado !== null && p.numero === numeroBuscado) ||
-    normalizar(`${p.nome} ${p.descricao ?? ''}`).includes(t))
+  return itens.filter((p) => (numeroBuscado !== null && p.numero === numeroBuscado) || textoDe(p).includes(t))
 }
 
 // Linha do cardápio no padrão de app: texto à esquerda, foto (quando tem) à direita, botão + sempre no mesmo lugar.
@@ -100,6 +111,41 @@ export function Abas({ categorias }) {
         </a>
       ))}
     </nav>
+  )
+}
+
+// A busca e o fim do cardápio também mostram o que é de encomenda, que fica em outra página.
+export function ParaFesta({ produtos }) {
+  if (!produtos.length) return null
+  return (
+    <ul className="linhas-festa-busca">
+      {produtos.map((p) => (
+        <li key={p.id}>
+          <a className="item-linha" href={`#/encomenda/${p.categoria}`}>
+            <span className="item-linha-texto">
+              <b>{p.nome}</b>
+              <small>Encomenda · pacote com 25</small>
+              <span className="preco">{brl(p.preco)}</span>
+            </span>
+            <span className="item-linha-lado"><span className="botao-mais" aria-hidden="true"><Icone nome="seta" tamanho={18} /></span></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export function AtalhosFesta({ categorias }) {
+  return (
+    <section className="categoria atalhos-festa" aria-labelledby="titulo-festa">
+      <header className="categoria-topo">
+        <h2 id="titulo-festa" className="titulo-secao">Para festa</h2>
+        <p className="dica">Pacotes de 25 por encomenda, com dia e horário de retirada.</p>
+      </header>
+      <nav aria-label="Categorias de encomenda">
+        {categorias.map((c) => <a key={c.id} href={`#/encomenda/${c.id}`}>{c.nome}<Icone nome="seta" tamanho={16} /></a>)}
+      </nav>
+    </section>
   )
 }
 

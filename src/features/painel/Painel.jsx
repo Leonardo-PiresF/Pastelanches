@@ -10,6 +10,7 @@ import { usePedidos } from './usePedidos.js'
 import { useCatalogo } from '../../hooks/useCatalogo.js'
 import { Carregando, Erro } from '../../components/Estado.jsx'
 import { aoMudarSessao, modoDemo, sair, salvarLoja, sessaoAtual } from '../../lib/db.js'
+import { arquivo } from '../../lib/config.js'
 import '../../styles/painel.css'
 
 const ABAS = [
@@ -82,7 +83,7 @@ function Area({ aba, sessao }) {
   return (
     <div className="painel">
       <header className="painel-topo">
-        <img src="/logo.webp" alt="" width="40" height="40" />
+        <img src={arquivo('/logo.webp')} alt="" width="40" height="40" />
         <h1>Painel</h1>
         {catalogo.dados && (
           <button
